@@ -1,26 +1,25 @@
+from typing import List, Optional
+
 from pydantic import BaseModel, Field
 
 
 class PredictionRequest(BaseModel):
-    I1: float = Field(..., description="Inlet flow rate 1")
-    I2: float = Field(..., description="Inlet flow rate 2")
-    I3: float = Field(..., description="Inlet flow rate 3")
-    I4: float = Field(..., description="Inlet flow rate 4")
+    I1: float = Field(..., description="Left inlet flow rate")
+    I2: float = Field(..., description="Upper inlet flow rate")
+    I3: float = Field(..., description="Right inlet flow rate")
+    I4: float = Field(..., description="Lower inlet flow rate")
 
 
 class PredictionStatistics(BaseModel):
     minimum: float
     maximum: float
     mean: float
+    valid_cells: int
 
 
 class PredictionResponse(BaseModel):
     model_name: str
-    inputs: dict[str, float]
-    output_type: str
-    output_dimension: int
-    grid_shape: list[int]
-    valid_cells: int
-    prediction: list[float]
-    grid: list[list[float | None]]
+    inputs: List[float]
+    prediction: List[float]
+    grid: List[List[Optional[float]]]
     statistics: PredictionStatistics
